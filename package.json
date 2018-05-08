@@ -1,0 +1,34 @@
+{
+  "name": "pdf-exif-extract",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "electron.pdf.exif",
+    "mac": {
+      "category": "electron.pdf.exif"
+    },
+    "asarUnpack":["node_modules/exiftool.pl/**"]
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "pdf",
+    "exif"
+  ],
+  "author": "blueness",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^1.8.4",
+    "electron-builder": "^20.11.1"
+  },
+  "dependencies": {
+    "dist-exiftool": "^10.53.0",
+    "node-exiftool": "^2.3.0"
+  }
+}

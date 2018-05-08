@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>只做一件事！改pdf属性标题</h1>
+    <div id="drag-file" onclick="openfile()">
+        <p id='file'>Drag your files here</p>
+    </div>
+
+    <div id='content' hidden >
+      <h3>Title</h3>
+      <input id="title">
+      <button onclick='change()'>修改</button>
+    </div>
+
+    <br>
+    <br>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+    <script type="text/javascript">
+      var ipcRenderer = require('electron').ipcRenderer
+      function change(){
+        var val = document.getElementById('title').value
+        console.log(val)
+        var file = document.getElementById('file').innerHTML
+        ipcRenderer.send('change', [val, file])
+      }
+      function openfile() {
+          ipcRenderer.send('open-dialog')
+        }
+
+
+    </script>
+    <style>
+        #drag-file {
+          border: 1px dashed #aaa;
+          border-radius: 4px;
+            text-align: center;
+            width:100%;
+            height:100px;
+            position: relative;
+            cursor: pointer;
+        }
+        #title {
+          width: 80%;
+          line-height: 20px;
+          font-size: 15px;
+        }
+        p, button {
+          font-size: 20px;
+        }
+    </style>
+    
+    
+    
+    <script>
+        (function () {
+            var holder = document.getElementById('drag-file');
+    
+            holder.ondragover = () => {
+                return false;
+            };
+    
+            holder.ondragleave = () => {
+                return false;
+            };
+    
+            holder.ondragend = () => {
+                return false;
+            };
+    
+            holder.ondrop = (e) => {
+                e.preventDefault();
+    
+                for (let f of e.dataTransfer.files) {
+                    console.log('File(s) you dragged here: ', f.path)
+                    ipcRenderer.send('open-file', f.path)
+                    
+                }
+                
+                return false;
+            };
+        })();
+
+        
+    </script>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>
